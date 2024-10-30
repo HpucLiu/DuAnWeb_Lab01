@@ -72,10 +72,28 @@ public class HoaDAO {
         }
         return ds;
     }
-
-    //Phương thức cập nhật sp
-    public boolean Update(Hoa hoa) {
-        String sql = "Update hoa set tenhoa=?, gia=?, hinh=?, maloai=?, ngaycapnhat=?";
+    
+    //Phương thức lấy sp theo page
+    public ArrayList<Hoa> getbyPage(int pageIndex, int pageSize) {
+        ArrayList<Hoa> ds = new ArrayList<>();
+        String sql = "select * from Hoa order by mahoa offset ? rows fetch next ? rows only";
+        conn = DbContext.getConnection();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, (pageIndex-1)*pageSize);
+            ps.setInt(2, pageSize);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                ds.add(new Hoa(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getInt(5), rs.getDate(6)));
+            }
+        } catch (Exception ex) {
+            System.out.println("Loi:" + ex.toString());
+        }
+        return ds;
+    }
+    
+    public boolean Insert(Hoa hoa) {
+        String sql = "insert into hoa(tenhoa,gia,hinh,maloai,ngaycapnhat) values (?,?,?,?,?)";
         conn = DbContext.getConnection();
         try {
             ps = conn.prepareStatement(sql);
@@ -84,7 +102,6 @@ public class HoaDAO {
             ps.setString(3, hoa.getHinh());
             ps.setInt(4, hoa.getMaloai());
             ps.setDate(5, hoa.getNgaycapnhat());
-            ps.setInt(6, hoa.getMaloai());
             int kq = ps.executeUpdate();
             if (kq > 0) {
                 return true;
@@ -95,9 +112,33 @@ public class HoaDAO {
         return false;
     }
 
+    //Phương thức cập nhật sp
+    public boolean Update(Hoa hoa) {
+        String sql = "Update hoa set tenhoa=?, gia=?, hinh=?, maloai=?, ngaycapnhat=? where mahoa=?";
+        conn = DbContext.getConnection();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, hoa.getTenhoa());
+            ps.setDouble(2, hoa.getGia());
+            ps.setString(3, hoa.getHinh());
+            ps.setInt(4, hoa.getMaloai());
+            ps.setDate(5, hoa.getNgaycapnhat());
+            ps.setInt(6, hoa.getMahoa());
+            int kq = ps.executeUpdate();
+            if (kq > 0) {
+                return true;
+            }
+        } catch (Exception ex) {
+            System.out.println("Loi:" + ex.toString());
+        }
+        return false;
+    }
+    
+    
+
     //Phương thức xoá sp
     public boolean Delete(int mahoa) {
-        String sql = "Delete from hoa where mahoa=?";
+        String sql = "delete from hoa where mahoa=?";
         conn = DbContext.getConnection();
         try {
             ps = conn.prepareStatement(sql);
@@ -131,15 +172,12 @@ public class HoaDAO {
     }
 
     public static void main(String[] args) {
+        
         HoaDAO hoaDao = new HoaDAO();
-        ArrayList<Hoa> dsHoa = hoaDao.getAll();
-        for (Hoa hoa : dsHoa) {
-            System.out.println(hoa);
-        }
-
-        dsHoa = hoaDao.getByCategoryId(2);
+        ArrayList<Hoa> dsHoa = hoaDao.getbyPage(1, 5);
         for (Hoa hoa : dsHoa) {
             System.out.println(hoa);
         }
     }
+
 }
