@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import model.Hoa;
 import model.Loai;
@@ -41,6 +42,13 @@ public class ManageProduct extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("username") == null) {
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        //response.setContentType("text/html;charset=UTF-8");
+
         LoaiDAO loaiDAO = new LoaiDAO();
         HoaDAO hoaDAO = new HoaDAO();
         String action = "LIST";
@@ -61,6 +69,7 @@ public class ManageProduct extends HttpServlet {
                 //Tính tổng số trang có thể có
                 int sumpage = (int) Math.ceil((double) hoaDAO.getAll().size() / pageSize);
                 request.setAttribute("dsHoa", hoaDAO.getbyPage(pageIndex, pageSize));
+                request.setAttribute("pageIndex", pageIndex);
                 request.setAttribute("sumpage", sumpage);
 
                 request.getRequestDispatcher("admin/list_product.jsp").forward(request, response);
