@@ -20,7 +20,7 @@ public class AccountDAO {
     PreparedStatement ps;
     ResultSet rs;
 
-    private Account checkLogin(String user, String pass) {
+    public Account checkLogin(String user, String pass) {
         Account tk = null;
         conn = DbContext.getConnection();
         try {
@@ -35,5 +35,22 @@ public class AccountDAO {
             System.out.println("Loi: "+e.toString());
         }
         return tk;
+    }
+    public boolean changePassword(Account tk) {
+        conn = DbContext.getConnection();
+        String sql = "update taikhoan set matkhau=? where tendangnhap=? ";
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, tk.getPass());
+            ps.setString(2, tk.getUser());
+            int kq = ps.executeUpdate();
+            if (kq > 0) {
+                return true;
+            }
+        } catch (Exception ex) {
+            System.out.println("Loi:" + ex.toString());
+        }
+
+        return false;
     }
 }
