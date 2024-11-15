@@ -18,7 +18,7 @@
         <%
             for (Loai x : dsloai) {
         %>
-        <li class="list-group-item"><a class="text-decoration-none" href="product.jsp?maloai=?<%= x.getMaloai()%>"><%=x.getTenloai()%></a></li>
+        <li class="list-group-item"><a class="text-decoration-none" href="product.jsp?maloai=<%= x.getMaloai()%>"><%=x.getTenloai()%></a></li>
             <%
                 }
             %>

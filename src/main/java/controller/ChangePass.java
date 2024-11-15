@@ -42,7 +42,8 @@ public class ChangePass extends HttpServlet {
 
         if (!newpass.equals(confirmpass)) {
             request.setAttribute("error", "Mật khẩu mới và mật khẩu xác nhận không trùng khớp.");
-            request.getRequestDispatcher("changepass.jsp").forward(request, response);
+            request.getRequestDispatcher("changePass.jsp").forward(request, response);
+            return;
         }
 
         HttpSession session = request.getSession();
@@ -57,7 +58,7 @@ public class ChangePass extends HttpServlet {
             request.getRequestDispatcher("home.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Mật khẩu cũ không đúng");
-            request.getRequestDispatcher("changepass.jsp").forward(request, response);
+            request.getRequestDispatcher("changePass.jsp").forward(request, response);
         }
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */

@@ -24,7 +24,7 @@ public class AccountDAO {
         Account tk = null;
         conn = DbContext.getConnection();
         try {
-            ps = conn.prepareStatement("select * from Account where user=? and pass =?");
+            ps = conn.prepareStatement("select * from taikhoan1 where tendangnhap=? and matkhau =?");
             ps.setString(1, user);
             ps.setString(2, pass);
             rs = ps.executeQuery();
@@ -38,7 +38,7 @@ public class AccountDAO {
     }
     public boolean changePassword(Account tk) {
         conn = DbContext.getConnection();
-        String sql = "update taikhoan set matkhau=? where tendangnhap=? ";
+        String sql = "update taikhoan1 set matkhau=? where tendangnhap=? ";
         try {
             ps = conn.prepareStatement(sql);
             ps.setString(1, tk.getPass());

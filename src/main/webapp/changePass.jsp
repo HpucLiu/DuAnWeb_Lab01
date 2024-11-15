@@ -15,7 +15,7 @@
 <jsp:include page="shared/nav.jsp" />
 <div class="container">
      <h2>Change Password</h2>
-    <form action="ChangePassServlet" method="post">
+    <form action="ChangePass" method="post">
         <div>
             <label>Old Password</label>
             <input type="password" name="oldpassword" required="" class="form-control">

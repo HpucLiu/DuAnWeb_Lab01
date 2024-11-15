@@ -51,6 +51,8 @@
     <ul class="pagination justify-content-center">
         <%
             int sumpage = (int) request.getAttribute("sumpage");
+            int pageIndex = (int) request.getAttribute("pageIndex");
+            
             for (int i = 1; i <= sumpage; i++) {
         %>
         <li class="page-item"><a class="page-link" href="ManageProduct?page=<%=i %>"><%=i %></a></li>
@@ -60,4 +62,7 @@
     </ul>
 </div>
 
+
+<a href="#" class="previous round">&#8249;</a>
+<a href="#" class="next round">&#8250;</a>
 <jsp:include page="../shared/footer.jsp" />
